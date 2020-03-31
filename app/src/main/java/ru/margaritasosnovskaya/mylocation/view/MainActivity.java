@@ -1,4 +1,4 @@
-package ru.margaritasosnovskaya.mylocation;
+package ru.margaritasosnovskaya.mylocation.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
+
+import ru.margaritasosnovskaya.mylocation.R;
 
 public class MainActivity extends AppCompatActivity {
 
