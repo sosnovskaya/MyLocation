@@ -3,15 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:orientation="vertical">
+
+    <include android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
 
     <TextView
         android:id="@+id/tvTitleGPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/provider_gps"
-        android:textSize="30sp"/>
+        android:textSize="30sp" />
     <TextView
         android:id="@+id/tvEnabledGPS"
         android:layout_width="wrap_content"
@@ -66,6 +74,8 @@
         android:onClick="onClickLocationSettings"
         android:text="@string/location_settings">
     </Button>
+
+</LinearLayout>
 
 
 </LinearLayout>

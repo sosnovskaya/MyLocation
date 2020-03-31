@@ -2,6 +2,7 @@ package ru.margaritasosnovskaya.mylocation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -13,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,15 +23,16 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PERMISSION_ACCESS_LOCATION = 99;
+    private static final int PERMISSION_ACCESS_FINE_LOCATION = 99;
 
+    private Toolbar toolbar;
 
-    TextView tvEnabledGPS;
-    TextView tvStatusGPS;
-    TextView tvLocationGPS;
-    TextView tvEnabledNet;
-    TextView tvStatusNet;
-    TextView tvLocationNet;
+    private TextView tvEnabledGPS;
+    private TextView tvStatusGPS;
+    private TextView tvLocationGPS;
+    private TextView tvEnabledNet;
+    private TextView tvStatusNet;
+    private TextView tvLocationNet;
 
     private LocationManager locationManager;
     StringBuilder sbGPS = new StringBuilder();
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initToolBar();
 
         tvEnabledGPS = findViewById(R.id.tvEnabledGPS);
         tvStatusGPS =  findViewById(R.id.tvStatusGPS);
@@ -50,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSION_ACCESS_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_ACCESS_FINE_LOCATION);
         }
     }
 
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_ACCESS_LOCATION:
+            case PERMISSION_ACCESS_FINE_LOCATION:
                 if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Toast.makeText(this, "Need your location!", Toast.LENGTH_SHORT).show();
                 }
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSION_ACCESS_LOCATION);
+                    PERMISSION_ACCESS_FINE_LOCATION);
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -121,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             if (provider.equals(LocationManager.GPS_PROVIDER)) {
-                tvStatusGPS.setText("Status: " + status);
-            } else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
+                tvStatusGPS.setText("Status: " + status); }
+            else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
                 tvStatusNet.setText("Status: " + status);
             }
         }
@@ -160,6 +164,19 @@ public class MainActivity extends AppCompatActivity {
     public void onClickLocationSettings(View view) {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+    }
+
+    private void initToolBar(){
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+
+        toolbar.inflateMenu(R.menu.menu);
     }
 
 }
