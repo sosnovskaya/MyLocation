@@ -1,12 +1,15 @@
 <resources>
 
 
-    <style name="AppTheme" parent="AppTheme.Base"/>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppDefault" parent="AppTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorTextIcon</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>
