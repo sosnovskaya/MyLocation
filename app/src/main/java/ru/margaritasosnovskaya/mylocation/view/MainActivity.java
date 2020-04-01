@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_ACCESS_FINE_LOCATION = 99;
 
     private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
 
     private TextView tvEnabledGPS;
     private TextView tvStatusGPS;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initToolBar();
+        initNavigationView();
 
         tvEnabledGPS = findViewById(R.id.tvEnabledGPS);
         tvStatusGPS =  findViewById(R.id.tvStatusGPS);
@@ -180,6 +183,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         toolbar.inflateMenu(R.menu.menu);
+    }
+
+    private void initNavigationView(){
+        drawerLayout = findViewById(R.id.drawer_layout);
     }
 
 }
