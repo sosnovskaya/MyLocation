@@ -23,11 +23,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.Date;
 
 import ru.margaritasosnovskaya.mylocation.R;
+import ru.margaritasosnovskaya.mylocation.fragment.FriendsFragmant;
+import ru.margaritasosnovskaya.mylocation.fragment.LocationFragment;
+import ru.margaritasosnovskaya.mylocation.fragment.PlacesFragmant;
+import ru.margaritasosnovskaya.mylocation.fragment.SettingsFragmant;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int PERMISSION_ACCESS_FINE_LOCATION = 99;
 
@@ -52,11 +58,19 @@ public class MainActivity extends AppCompatActivity {
         initToolBar();
 
         drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new LocationFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_location);
+        }
 
         tvEnabledGPS = findViewById(R.id.tvEnabledGPS);
         tvStatusGPS =  findViewById(R.id.tvStatusGPS);
@@ -201,5 +215,34 @@ public class MainActivity extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.nav_location:{
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new LocationFragment()).commit();
+                break;
+            }
+            case R.id.nav_friends:{
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new FriendsFragmant()).commit();
+                break;
+            }
+            case R.id.nav_places:{
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PlacesFragmant()).commit();
+                break;
+            }
+            case R.id.nav_settings:{
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new SettingsFragmant()).commit();
+                break;
+            }
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

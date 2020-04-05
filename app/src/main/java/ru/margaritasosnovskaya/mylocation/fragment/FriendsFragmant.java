@@ -13,9 +13,11 @@ import ru.margaritasosnovskaya.mylocation.R;
 
 public class FriendsFragmant extends Fragment {
 
+    private static int LAYOUT = R.layout.fragment_friends;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(LAYOUT,container,false);
     }
 }
