@@ -18,12 +18,13 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 public class LocationFragment extends Fragment {
 
-    private static int LAYOUT = R.layout.location;
+    private static int LAYOUT = R.layout.fragment_location;
     private View view;
 
     private TextView tvEnabledGPS;
     private TextView tvStatusGPS;
     private TextView tvLocationGPS;
+
     private TextView tvEnabledNet;
     private TextView tvStatusNet;
     private TextView tvLocationNet;

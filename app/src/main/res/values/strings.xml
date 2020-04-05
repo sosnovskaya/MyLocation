@@ -9,4 +9,7 @@
     <string name="menu_item_friends">Мои друзья</string>
     <string name="menu_item_places">Мои места</string>
     <string name="menu_item_settings">Настройки</string>
+    
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
