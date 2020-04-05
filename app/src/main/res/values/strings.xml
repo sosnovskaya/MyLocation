@@ -3,5 +3,10 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Network</string>
     <string name="location_settings">Location settings</string>
+
+    <string name="menu_item_log_out">Выход</string>
+    <string name="menu_item_my_location">Моё положение</string>
+    <string name="menu_item_friends">Мои друзья</string>
+    <string name="menu_item_places">Мои места</string>
     <string name="menu_item_settings">Настройки</string>
 </resources>

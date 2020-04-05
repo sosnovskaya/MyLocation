@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvLocationNet;
 
     private LocationManager locationManager;
-    StringBuilder sbGPS = new StringBuilder();
-    StringBuilder sbNet = new StringBuilder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
