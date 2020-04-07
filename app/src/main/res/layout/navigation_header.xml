@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_header"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="192dp"
@@ -10,7 +10,8 @@
     android:padding="16dp"
     style="@style/ThemeOverlay.AppCompat.Dark">
     
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/profilePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher_round"/>
@@ -20,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Ricunsos"
+        android:text="@string/default_username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
     <TextView
@@ -28,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="some@mail.com"
+        android:text="@string/default_useremail"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 </LinearLayout>

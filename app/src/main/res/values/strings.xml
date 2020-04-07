@@ -9,7 +9,17 @@
     <string name="menu_item_friends">Мои друзья</string>
     <string name="menu_item_places">Мои места</string>
     <string name="menu_item_settings">Настройки</string>
-    
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    
+    <string name="email_hint">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_in_txt">Sign in</string>
+    <string name="log_in_txt">Log in</string>
+
+    <string name="signIn_input_error">Ошибка ввода данных!</string>
+    <string name="default_username">Default_userName</string>
+    <string name="default_useremail">Default_userEmail</string>
+
 </resources>

@@ -1,8 +1,9 @@
-package ru.margaritasosnovskaya.mylocation.view;
+package ru.margaritasosnovskaya.mylocation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 import com.google.android.material.navigation.NavigationView;
@@ -24,14 +26,32 @@ import ru.margaritasosnovskaya.mylocation.fragment.SettingsFragmant;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static String EMAIL_KEY = "EMAIL_KEY";
+    public static String PASSWORD_KEY = "PASSWORD_KEY";
+
     private Toolbar toolbar;
     private DrawerLayout drawer;
+
+    private AppCompatImageView mPhoto;
+    private NavigationView navigationView;
+    private TextView userEmail;
+    private String currentUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mPhoto = findViewById(R.id.profilePhoto);
+        userEmail = findViewById(R.id.user_email);
+
+        navigationView = findViewById(R.id.navigation_view);
+        userEmail = navigationView.getHeaderView(0).findViewById(R.id.user_email);
+        currentUserEmail = getIntent().getStringExtra(EMAIL_KEY);
+        if(currentUserEmail != null && userEmail != null)
+            userEmail.setText(currentUserEmail);
+
 
         initToolBar();
 
@@ -50,6 +70,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_location);
         }
     }
+
+
+
+    private View.OnClickListener mPhotoOncLickLictener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     private void initToolBar(){
         toolbar = findViewById(R.id.toolbar);
