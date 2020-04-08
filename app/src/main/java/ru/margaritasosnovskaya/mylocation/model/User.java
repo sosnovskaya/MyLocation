@@ -9,86 +9,57 @@ import java.util.List;
 import java.util.Objects;
 
 public class User implements Serializable {
-    private String name;
-    private String password;
-    private String email;
+    private String mEmail;
+    private String mLogin;
+    private String mPassword;
+    private String mPhotoUri;
 
-    private Location currentLocation;
-    private List<Place> places;
-    private List<User> friends;
-    private String status;  //make enumiration maybe
+    private boolean mHasSuccessLogin;
 
-    public User( String password, String email) {
-        this.password = password;
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public User(String email,String login, String password) {
+        mEmail = email;
+        mLogin = login;
+        mPassword = password;
     }
 
     public String getEmail() {
-        return email;
+        return mEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String mEmail) {
+        this.mEmail = mEmail;
     }
 
-    public Location getCurrentLocation() {
-        return currentLocation;
+    public String getLogin() {
+        return mLogin;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
+    public void setLogin(String login) {
+        mLogin = login;
     }
 
-    public List<Place> getPlaces() {
-        return places;
+    public String getPassword() {
+        return mPassword;
     }
 
-    public void setPlaces(List<Place> places) {
-        this.places = places;
+    public void setPassword(String password) {
+        mPassword = password;
     }
 
-    public List<User> getFriends() {
-        return friends;
+    public String getPhotoUri() {
+        return mPhotoUri;
     }
 
-    public void setFriends(List<User> friends) {
-        this.friends = friends;
+    public void setPhotoUri(String photoUri) {
+        mPhotoUri = photoUri;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean hasSuccessLogin() {
+        return mHasSuccessLogin;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setHasSuccessLogin(boolean hasSuccessLogin) {
+        mHasSuccessLogin = hasSuccessLogin;
     }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-
 }
 
