@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ru.margaritasosnovskaya.mylocation.model.User;
+
 public class AuthActivity extends AppCompatActivity {
 
     private static int LAYOUT = R.layout.activity_auth;
@@ -43,7 +45,8 @@ public class AuthActivity extends AppCompatActivity {
             if(isEmailValid() && isPasswordValid()){
                 Intent startMainIntent =
                         new Intent(AuthActivity.this, MainActivity.class);
-                startMainIntent.putExtra(MainActivity.EMAIL_KEY, mEmail.getText().toString());
+                startMainIntent.putExtra(MainActivity.USER_KEY,
+                        new User(mPassword.getText().toString(),mEmail.getText().toString()));
                 startActivity(startMainIntent);
                 //добавить проверку,что такой пользователь есть в базе,когда будет база(
             }

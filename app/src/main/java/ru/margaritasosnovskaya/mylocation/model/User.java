@@ -2,20 +2,23 @@ package ru.margaritasosnovskaya.mylocation.model;
 
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class User {
+public class User implements Serializable {
     private String name;
     private String password;
     private String email;
+
     private Location currentLocation;
     private List<Place> places;
     private List<User> friends;
     private String status;  //make enumiration maybe
 
-    public User(String name, String password, String email) {
-        this.name = name;
+    public User( String password, String email) {
         this.password = password;
         this.email = email;
     }
@@ -28,11 +31,11 @@ public class User {
         this.name = name;
     }
 
-    private String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    private void setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -76,26 +79,16 @@ public class User {
         this.status = status;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return name.equals(user.name) &&
-                password.equals(user.password) &&
-                email.equals(user.email);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, password, email);
-    }
 }
+

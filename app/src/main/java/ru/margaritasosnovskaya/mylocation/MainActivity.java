@@ -23,11 +23,11 @@ import ru.margaritasosnovskaya.mylocation.fragment.FriendsFragmant;
 import ru.margaritasosnovskaya.mylocation.fragment.LocationFragment;
 import ru.margaritasosnovskaya.mylocation.fragment.PlacesFragmant;
 import ru.margaritasosnovskaya.mylocation.fragment.SettingsFragmant;
+import ru.margaritasosnovskaya.mylocation.model.User;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static String EMAIL_KEY = "EMAIL_KEY";
-    public static String PASSWORD_KEY = "PASSWORD_KEY";
+    public static String USER_KEY = "EMAIL_KEY";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private TextView userEmail;
     private String currentUserEmail;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         mPhoto = findViewById(R.id.profilePhoto);
-        userEmail = findViewById(R.id.user_email);
+
+        Bundle bundle = getIntent().getExtras();
+        user = (User)bundle.get(USER_KEY);
 
         navigationView = findViewById(R.id.navigation_view);
         userEmail = navigationView.getHeaderView(0).findViewById(R.id.user_email);
-        currentUserEmail = getIntent().getStringExtra(EMAIL_KEY);
-        if(currentUserEmail != null && userEmail != null)
-            userEmail.setText(currentUserEmail);
+        userEmail.setText(user.getEmail());
 
 
         initToolBar();
