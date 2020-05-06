@@ -19,7 +19,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.margaritasosnovskaya.mylocation.utils.Utils;
 
 
 public class LocationService extends Service {
@@ -80,13 +79,11 @@ public class LocationService extends Service {
 
     public void requestLocationUpdates() {
         Log.i(TAG, "Requesting location updates");
-        Utils.setRequestingLocationUpdates(this, true);
         startService(new Intent(getApplicationContext(), LocationService.class));
         try {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                     mLocationCallback, Looper.myLooper());
         } catch (SecurityException unlikely) {
-            Utils.setRequestingLocationUpdates(this, false);
             Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
         }
     }
@@ -95,10 +92,8 @@ public class LocationService extends Service {
         Log.i(TAG, "Removing location updates");
         try {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-            Utils.setRequestingLocationUpdates(this, false);
             stopSelf();
         } catch (SecurityException unlikely) {
-            Utils.setRequestingLocationUpdates(this, true);
             Log.e(TAG, "Lost location permission. Could not remove updates. " + unlikely);
         }
     }

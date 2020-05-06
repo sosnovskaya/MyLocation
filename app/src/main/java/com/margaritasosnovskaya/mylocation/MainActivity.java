@@ -8,14 +8,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -42,7 +42,6 @@ import com.margaritasosnovskaya.mylocation.fragment.SettingsFragmant;
 import com.margaritasosnovskaya.mylocation.fragment.ShowMapsFragment;
 import com.margaritasosnovskaya.mylocation.model.User;
 import com.margaritasosnovskaya.mylocation.services.LocationService;
-import com.margaritasosnovskaya.mylocation.utils.Utils;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static String USER_KEY = "EMAIL_KEY";
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    private static final int LOCATION_PERMISSIONS_REQUEST_CODE = 34;
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LocationService.LocalBinder binder = (LocationService.LocalBinder) service;
             locationService = binder.getService();
             isBounded = true;
-            if (!checkPermissions()) {
+            if (!checkLocationPermissions()) {
                 requestPermissions();
             } else {
                 locationService.requestLocationUpdates();
@@ -99,11 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle bundle = getIntent().getExtras();
         user = (User)bundle.get(USER_KEY);
 
-        if (Utils.requestingLocationUpdates(this)) {
-            if (!checkPermissions()) {
-                requestPermissions();
-            }
-        }
         receiver = new MyReceiver();
 
         mPhoto = findViewById(R.id.profilePhoto);
@@ -121,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        if(!checkLocationPermissions()){
+            requestPermissions();
+        }
 
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -154,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStop() {
         if (isBounded) {
-            //locationService.removeLocationUpdates();
             unbindService(mServiceConnection);
             isBounded = false;
         }
@@ -171,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onReceive(Context context, Intent intent) {
             Location location = intent.getParcelableExtra(LocationService.EXTRA_LOCATION);
             if (location != null) {
-                Toast.makeText(MainActivity.this, Utils.getLocationText(location),
+                Toast.makeText(MainActivity.this, getLocationText(location),
                         Toast.LENGTH_SHORT).show();
             }
         }
@@ -184,23 +181,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
-    /**
-     * Returns the current state of the permissions needed.
-     */
-    private boolean checkPermissions() {
+    private boolean checkLocationPermissions() {
         return  PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     private void requestPermissions() {
-        boolean shouldProvideRationale =
-                ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION);
-
-        // Provide an additional rationale to the user. This would happen if the user denied the
-        // request previously, but didn't check the "Don't ask again" checkbox.
-        if (shouldProvideRationale) {
-            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
             Snackbar.make(
                     findViewById(R.id.activity_main),
                     R.string.permission_rationale,
@@ -208,38 +196,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setAction(R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            // Request permission
                             ActivityCompat.requestPermissions(MainActivity.this,
                                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                    REQUEST_PERMISSIONS_REQUEST_CODE);
+                                    LOCATION_PERMISSIONS_REQUEST_CODE);
                         }
                     })
                     .show();
+
+//            new AlertDialog.Builder(this)
+//                    .setMessage("Необъодим доступ к местоположению устройства")
+//                    .setPositiveButton("Понято", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            ActivityCompat.requestPermissions(MainActivity.this,
+//                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                                    LOCATION_PERMISSIONS_REQUEST_CODE);
+//                        }
+//                    })
+//                    .show();
         } else {
-            Log.i(TAG, "Requesting permission");
-            // Request permission. It's possible this can be auto answered if device policy
-            // sets the permission in a given state or the user denied the permission
-            // previously and checked "Never ask again".
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
+                    LOCATION_PERMISSIONS_REQUEST_CODE);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        Log.i(TAG, "onRequestPermissionResult");
-        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.length <= 0) {
-                // If user interaction was interrupted, the permission request is cancelled and you
-                // receive empty arrays.
-                Log.i(TAG, "User interaction was cancelled.");
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission was granted.
+        if (requestCode == LOCATION_PERMISSIONS_REQUEST_CODE) {
+             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationService.requestLocationUpdates();
-            } else {
-                // Permission denied.
+             } else {
                 Snackbar.make(
                         findViewById(R.id.activity_main),
                         R.string.permission_denied_explanation,
@@ -259,6 +247,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
                         })
                         .show();
+
+//                   new AlertDialog.Builder(this)
+//                    .setMessage("Вы можете дать разрешение в настройках.")
+//                    .setPositiveButton("Понято", null)
+//                    .show();
             }
         }
     }
@@ -279,6 +272,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onClickLocationSettings(View view) {
         startActivity(new Intent(
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+    }
+
+    public static String getLocationText(Location location) {
+        return location == null ? "Unknown location" :
+                "(" + location.getLatitude() + ", " + location.getLongitude() + ")";
     }
 
 

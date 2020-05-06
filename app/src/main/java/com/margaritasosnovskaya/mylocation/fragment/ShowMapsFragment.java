@@ -27,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.margaritasosnovskaya.mylocation.R;
 import com.margaritasosnovskaya.mylocation.services.LocationService;
@@ -37,6 +38,7 @@ public class ShowMapsFragment extends Fragment implements OnMapReadyCallback {
     private static int LAYOUT = R.layout.fragment_maps_location;
     private View view;
     private GoogleMap mMap;
+    private Marker marker;
     private Location mLocation;
     private MyReceiver receiver;
 
@@ -52,10 +54,10 @@ public class ShowMapsFragment extends Fragment implements OnMapReadyCallback {
         public void onReceive(Context context, Intent intent) {
             Location location = intent.getParcelableExtra(LocationService.EXTRA_LOCATION);
             mLocation = location;
-            if (location != null) {
+            if (location != null && marker != null) {
                 LatLng mPosition = new LatLng(location.getLatitude(),location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(mPosition).title("I'm here"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(mPosition));
+                marker.setPosition(mPosition);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mPosition,15));
             }
         }
     }
@@ -98,7 +100,7 @@ public class ShowMapsFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
             // Add a marker in Sydney and move the camera
             LatLng sydney = new LatLng(37.42, -122.08);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            marker = mMap.addMarker(new MarkerOptions().position(sydney).title("I'm here"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15));
     }
 }
